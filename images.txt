@@ -9,6 +9,3 @@ minio/minio:latest
 
 # MinIO客户端镜像（用于初始化存储桶）
 minio/mc:latest
-
-# Dify应用镜像
-difyapi/dify:latest
