@@ -11,4 +11,4 @@ minio/minio:latest
 minio/mc:latest
 
 # web框架
-tiangolo/fastapi
+fastapi/fastapi
