@@ -28,3 +28,5 @@ docker.elastic.co/kibana/kibana:8.14.3
 downloads.unstructured.io/unstructured-io/unstructured-api:latest
 
 #vastdata/vastbase-vector
+
+mysql:latest
