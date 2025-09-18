@@ -30,3 +30,4 @@ downloads.unstructured.io/unstructured-io/unstructured-api:latest
 #vastdata/vastbase-vector
 
 mysql
+node:16-alpine
