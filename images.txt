@@ -3,12 +3,12 @@ langgenius/dify-web:1.10.1
 postgres:15-alpine
 redis:6-alpine
 langgenius/dify-sandbox:0.2.12
-langgenius/dify-plugin-daemon:0.3.0-local
+langgenius/dify-plugin-daemon:0.4.1-local
 ubuntu/squid:latest
 certbot/certbot
 nginx:latest
 semitechnologies/weaviate:1.10.1
-langgenius/qdrant:v1.7.3
+langgenius/qdrant:v1.8.3
 pgvector/pgvector:pg16
 
 tensorchord/pgvecto-rs:pg16-v0.3.0
