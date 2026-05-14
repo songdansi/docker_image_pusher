@@ -12,7 +12,7 @@ langgenius/qdrant:v1.8.3
 pgvector/pgvector:pg16
 
 tensorchord/pgvecto-rs:pg16-v0.3.0
-ghcr.io/chroma-core/chroma:0.5.20
+ghcr.io/chroma-core/chroma:latest
 oceanbase/oceanbase-ce:4.3.5-lts
 oceanbase/seekdb:latest
 container-registry.oracle.com/database/free:latest
