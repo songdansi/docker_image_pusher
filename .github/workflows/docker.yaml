@@ -40,8 +40,24 @@ jobs:
         remove-codeql: 'true'
         build-mount-path: '/var/lib/docker/'
 
-    - name: Restart docker
-      run: sudo service docker restart
+    # 关键修复：Docker 29（Ubuntu 26.04 镜像自带）默认启用 containerd 镜像存储，
+    # 镜像层写到根分区的 /var/lib/containerd（仅 2GB 保留），而不是 LVM 挂载的 /var/lib/docker。
+    # 双保险：
+    # 1) 关闭 containerd snapshotter，退回经典 overlay2 驱动；
+    # 2) 把 /var/lib/containerd bind-mount 到大磁盘上，即使驱动切换失败也不会撑爆根分区。
+    - name: Redirect containerd storage to mounted disk
+      run: |
+        sudo systemctl stop docker docker.socket containerd 2>/dev/null || true
+        # 把 containerd 数据目录重定向到 LVM 大磁盘（/var/lib/docker 已被 maximize-build-space 挂载）
+        sudo mkdir -p /var/lib/docker/containerd
+        sudo mount --bind /var/lib/docker/containerd /var/lib/containerd
+        # 尝试退回经典 overlay2 驱动（Docker 28 及以下的行为）
+        echo '{"features":{"containerd-snapshotter":false}}' | sudo tee /etc/docker/daemon.json
+        sudo systemctl start containerd 2>/dev/null || true
+        sudo systemctl start docker || sudo service docker start
+        echo "Storage driver in use: $(docker info -f '{{ .Driver }}')"
+        echo "===== 挂载检查（containerd 应与大磁盘同属一个文件系统） ====="
+        df -hT / /var/lib/docker /var/lib/containerd
 
     - name: Free up disk space complete
       run: |
@@ -49,6 +65,7 @@ jobs:
         echo "=============================================================================="
         df -hT
         echo "=============================================================================="
+        docker info | grep -i "Storage Driver"
 
     - name: Checkout Code
       uses: actions/checkout@v4
